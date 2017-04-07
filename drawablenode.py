@@ -33,62 +33,84 @@ class DrawableNode(object):
         self.dirty = False
         self._color = (125, 255, 255)
 
-    def get_neighbors(self, listt):
-        '''gets the neighbors of a node'''
-        dirs = []
-        if self.index[0] == 9 or self.walkable == False:
-            right = None
-        else:
-            right = listt[self.identification + 10]
-            dirs.append(right)
 
-        if self.index[0] == 9 or self.index[1] == 0 or self.walkable == False:
-            top_right = None
-        else:
-            top_right = listt[self.identification + 9]
-            dirs.append(top_right)
+def getneighbors(self, listt):
+    '''gets the neighbors of a node'''
+    dirs = []
+    if self.index[0] == 9 or self.walkable == False:
+        right = None
+    else:
+        right = listt[self.identification + 10]
+        dirs.append(right)
 
-        if self.index[1] == 0 or self.walkable == False:
-            top = None
-        else:
-            top = listt[self.identification - 1]
-            dirs.append(top)
+    if self.index[0] == 9 or self.index[1] == 0 or self.walkable == False:
+        top_right = None
+    else:
+        top_right = listt[self.identification + 9]
+        dirs.append(top_right)
 
-        if self.index[0] == 0 or self.index[1] == 0 or self.walkable == False:
-            top_left = None
-        else:
-            top_left = listt[self.identification - 11]
-            dirs.append(top_left)
+    if self.index[1] == 0 or self.walkable == False:
+        top = None
+    else:
+        top = listt[self.identification - 1]
+        dirs.append(top)
 
-        if self.index[0] == 0 or self.walkable == False:
-            left = None
-        else:
-            left = listt[self.identification - 10]
-            dirs.append(left)
+    if self.index[0] == 0 or self.index[1] == 0 or self.walkable == False:
+        top_left = None
+    else:
+        top_left = listt[self.identification - 11]
+        dirs.append(top_left)
 
-        if self.index[0] == 0 or self.index[1] == 9 or self.walkable == False:
-            bottom_left = None
-        else:
-            bottom_left = listt[self.identification - 9]
-            dirs.append(bottom_left)
+    if self.index[0] == 0 or self.walkable == False:
+        left = None
+    else:
+        left = listt[self.identification - 10]
+        dirs.append(left)
 
-        if self.index[1] == 9 or self.walkable == False:
-            bottom = None
-        else:
-            bottom = listt[self.identification + 1]
-            dirs.append(bottom)
+    if self.index[0] == 0 or self.index[1] == 9 or self.walkable == False:
+        bottom_left = None
+    else:
+        bottom_left = listt[self.identification - 9]
+        dirs.append(bottom_left)
 
-        if self.index[0] == 9 or self.index[1] == 9 or self.walkable == False:
-            bottom_right = None
-        else:
-            bottom_right = listt[self.identification + 11]
-            dirs.append(bottom_right)
+    if self.index[1] == 9 or self.walkable == False:
+        bottom = None
+    else:
+        bottom = listt[self.identification + 1]
+        dirs.append(bottom)
 
-        self.adjacents = list(dirs)
+    if self.index[0] == 9 or self.index[1] == 9 or self.walkable == False:
+        bottom_right = None
+    else:
+        bottom_right = listt[self.identification + 11]
+        dirs.append(bottom_right)
 
-        return self.adjacents
+    self.adjacents = list(dirs)
 
+    return self.adjacents
+
+
+def get_neighbors(node, nodes):
+    '''asdf'''
+    current = node
+    right = (current[0] + 1, current[1])
+    top_right = (current[0] + 1, current[1] + 1)
+    top = (current[0], current[1] + 1)
+    top_left = (current[0] - 1, current[1] + 1)
+    left = (current[0] - 1, current[1])
+    bottom_left = (current[0] - 1, current[1] - 1)
+    bottom = (current[0], current[1] - 1)
+    bottom_right = (current[0] + 1, current[1] - 1)
+    directions = [right, top_right, top, top_left,
+                  left, bottom_left, bottom, bottom_right]
+    neighbors = []
+    for i in nodes:
+        node = (i[0], i[1])
+        if node in directions:
+            neighbors.append(i)
+    return neighbors
     # properties
+
     @property
     def walkable(self):
         return self._walkable

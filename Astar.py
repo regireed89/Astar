@@ -1,26 +1,26 @@
 '''a* game'''
+import drawablenode as DN
 
 
-
-def astar(start, end):
+def astar(start, end, graph):
     '''astar algorithm'''
     openlist = []
     closedlist = []
     camefrom = []
     openlist.append(start)
     start.g = 0
+    openlist.sort(key=lambda x: x.f)
     while len(openlist) != 0:
-        openlist.sort(key=lambda x: x.f)
         current = openlist[0]
         openlist.remove(current)
         closedlist.append(current)
         if current == end:
             camefrom = retrace(start, end)
             return camefrom
-        for node in current.adjacents:
-            if node in closedlist:
+        neighbors = DN.get_neighbors(current, graph)
+        for node in neighbors:
+            if node in closedlist or not node.walkable:
                 continue
-            set_gscore(current, node)
             tentative_g = current.g + set_gscore(current, node)
             if node not in openlist:
                 openlist.append(node)
@@ -28,21 +28,21 @@ def astar(start, end):
                 continue
             node.parent = current
             node.g = tentative_g
-            node.h = Manhattan(node, end)
+            node.h = manhattan(node, end)
             node.f = node.g + node.h
+    return camefrom
 
 
-
-def Manhattan(start, end):
+def manhattan(start, end):
     '''calculate manhattan distance'''
-    xtotal = abs(end.posx - start.posx)
-    ytotal = abs(end.posy - start.posy)
+    xtotal = abs(end.pos[0] - start.pos[0])
+    ytotal = abs(end.pos[1] - start.pos[1])
     return (xtotal + ytotal) * 10
 
 
 def set_gscore(current, adjacent):
     '''sets gscore for node'''
-    return 10 if adjacent.posx == current.posx or adjacent.posy == current.posy else 14
+    return 10 if adjacent.pos[0] == current.pos[0] or adjacent.pos[1] == current.pos[1] else 14
 
 
 def retrace(start, end):
@@ -52,4 +52,5 @@ def retrace(start, end):
     while i is not start:
         path.append(i)
         i = i.parent
+    path.append(i)
     return path
